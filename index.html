@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HKCC Sources | By Luthor</title>
+    
+    <style>
+        /* --- DESIGN SYSTEM --- */
+        :root {
+            --primary: #003366;   
+            --text: #1d1d1f;
+            --glass: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.4);
+        }
+
+        * { box-sizing: border-box; }
+
+        /* --- THE FANCY ANIMATED BACKGROUND --- */
+        body {
+            margin: 0;
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--text);
+            line-height: 1.7;
+            background: linear-gradient(-45deg, #c2c2c2, #e9dbdb, #d59898, #f80000);    /*background colour */
+            background-size: 400% 400%;
+            animation: fluidGradient 15s ease infinite;
+            scroll-behavior: smooth;
+        }
+
+        @keyframes fluidGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 10%;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(20px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .logo { font-weight: 800; color: var(--primary); letter-spacing: 1px; }
+        .nav-links a { text-decoration: none; color: var(--text); margin-left: 25px; font-weight: 500; font-size: 0.9rem; }
+
+        .hero { padding: 100px 10%; text-align: left; }
+        .hero h1 { font-size: 4.5rem; margin: 0; letter-spacing: -3px; color: var(--primary); line-height: 1.1; }
+        .hero p { font-size: 1.4rem; max-width: 700px; color: #444; margin-top: 20px; }
+
+        .section-container { padding: 60px 10%; }
+        .section-title { font-size: 2rem; font-weight: 800; margin-bottom: 40px; color: var(--primary); text-transform: uppercase; letter-spacing: 2px; }
+
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        /* --- SKILL TILES (Used for Certificates) --- */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .skill-tile {
+            background: var(--glass);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid var(--glass-border);
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            height: 100%;
+        }
+
+        .skill-tile:hover {
+            background: white;
+            transform: translateY(-5px);
+            border-bottom: 4px solid var(--primary);
+        }
+
+        .skill-name { font-weight: 800; font-size: 1.1rem; }
+        .skill-type { font-size: 0.75rem; color: var(--primary); font-weight: 700; text-transform: uppercase; }
+
+        /* --- PREMIUM HIGH-VISIBILITY WIDE SUBJECT CARDS --- */
+        .subject-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .subject-wide-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            padding: 30px 40px;
+            border-radius: 24px;
+            transition: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+        }
+
+        .subject-wide-card:hover {
+            background: white;
+            transform: translateX(8px);
+            border-left: 6px solid var(--primary);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+        }
+
+        .subject-header-box {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .badge-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 5px 14px;
+            border-radius: 50px;
+            background: rgba(0, 51, 102, 0.08);
+            color: var(--primary);
+            letter-spacing: 0.5px;
+        }
+
+        .badge.highlight {
+            background: rgba(216, 67, 21, 0.1);
+            color: #d84315;
+        }
+
+        .subject-title {
+            font-weight: 800;
+            font-size: 1.35rem;
+            color: var(--text);
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .subject-desc-box {
+            background: rgba(255, 255, 255, 0.65);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            padding: 22px 28px;
+            border-radius: 16px;
+            font-size: 1.05rem;
+            color: #2d2d30;
+            line-height: 1.6;
+            font-weight: 500;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* --- CONTACT & FOOTER --- */
+        .contact-section {
+            margin: 50px 10% 100px 10%;
+            background: var(--primary);
+            color: white;
+            padding: 80px 40px;
+            border-radius: 40px;
+            text-align: center;
+        }
+
+        .contact-btn {
+            display: inline-block;
+            background: white;
+            color: var(--primary);
+            padding: 18px 45px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 800;
+            margin-top: 30px;
+            transition: 0.3s;
+        }
+        
+        .contact-btn:hover {
+            background: #f0f0f0;
+            transform: scale(1.05);
+        }
+
+        footer { text-align: center; padding: 40px; font-size: 0.8rem; opacity: 0.6; }
+
+        @media (max-width: 992px) {
+            .subject-wide-card {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 30px;
+            }
+            .subject-desc-box {
+                padding: 18px 22px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 3rem; }
+        }
+
+        .cert-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">HKCC SOURCES</div>
+        <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#subjects">Subjects</a>
+            <a href="#services">Books & Services</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <span style="font-weight: 800; color: var(--primary); letter-spacing: 2px;">BY Bruce</span>
+        <h1>HKCC Sources.</h1>
+        <p style="font-weight: 600; margin-bottom: 10px; color: #1d1d1f;">📚 HKCC 工程學副學士學科資料分享｜助你提升 GPA，邁向學業成功 🎓</p>
+        <ul style="color: #444; font-size: 1.1rem; line-height: 1.8; list-style-type: none; padding: 0;">
+            <li>🏆 <strong>學術成就：</strong>畢業 GPA 3.8X (Distinction)｜獲得 HKUST、PolyU、CityU 土木工程學士課程取錄</li>
+            <li>🏅 <strong>學術榮譽：</strong>多次獲 Dean’s List｜Director’s List｜學術獎學金</li>
+            <li>🔍 <strong>信心保證：</strong>成績可核實｜眾多學生成績提升見證</li>
+        </ul>
+    </header>
+
+    <section class="section-container" id="features">
+        <h2 class="section-title">🔥 Source 特點 🔥</h2>
+        <div class="glass-card">
+            <h3 style="margin-top: 0;">1️⃣ 更新全面</h3>
+            <p style="margin-bottom: 0;">涵蓋多個學期資料，部分學科已更新至 24-25 學年第二學期。</p>
+        </div>
+        <div class="glass-card">
+            <h3 style="margin-top: 0;">2️⃣ 一站式備考</h3>
+            <p style="margin-bottom: 0;">Lecture Notes、Past Paper、Assignment、Group Project 一應俱全。</p>
+        </div>
+        <div class="glass-card" style="margin-bottom: 0;">
+            <h3 style="margin-top: 0;">3️⃣ 分類整齊</h3>
+            <p style="margin-bottom: 0;">資料分類井井有條，為你節省時間，提升溫習效率。</p>
+        </div>
+    </section>
+
+    <section class="section-container" id="subjects">
+        <h2 class="section-title">👑 王牌科目 👑</h2>
+        <div class="subject-container">
+            
+            <div class="subject-wide-card">
+                <div class="subject-header-box">
+                    <div class="badge-row">
+                        <span class="badge">A- Grade</span>
+                    </div>
+                    <h3 class="subject-title">LCH1105 Chinese Communication</h3>
+                </div>
+                <div class="subject-desc-box">
+                    獨家筆記, Past Paper Q&A, 社評/書評真跡, 送電子書籍 (Cantonese Version)
+                </div>
+            </div>
+
+            <div class="subject-wide-card">
+                <div class="subject-header-box">
+                    <div class="badge-row">
+                        <span class="badge highlight">A+ Grade</span>
+                        <span class="badge highlight">🌟 熱賣</span>
+                    </div>
+                    <h3 class="subject-title">SEHH1028 Elementary Statistics</h3>
+                </div>
+                <div class="subject-desc-box">
+                    獨家筆記, Midterm真跡 & Assignments, 全套練習(PP/Tutorial/MC)
+                </div>
+            </div>
+
+            <div class="subject-wide-card">
+                <div class="subject-header-box">
+                    <div class="badge-row">
+                        <span class="badge">A+ Grade</span>
+                    </div>
+                    <h3 class="subject-title">SEHH1068 Foundation Mathematics</h3>
+                </div>
+                <div class="subject-desc-box">
+                    <div>
+                        Assignments with ans, Test with Sol, Exam Official ans, 5份Inclass worksheet真跡<br>
+                        <span style="color:#666; font-size:0.85rem; display:inline-block; margin-top:4px;">*電子版本教科書可額外買</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subject-wide-card">
+                <div class="subject-header-box">
+                    <div class="badge-row">
+                        <span class="badge">A+ Grade</span>
+                    </div>
+                    <h3 class="subject-title">SEHH1069 Calculus & Linear Algebra</h3>
+                </div>
+                <div class="subject-desc-box">
+                    <div>
+                        Assignments with ans, Test with Sol, Exam Official ans, 真跡<br>
+                        <span style="color:#666; font-size:0.85rem; display:inline-block; margin-top:4px;">*電子版本教科書可額外買</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subject-wide-card">
+                <div class="subject-header-box">
+                    <div class="badge-row">
+                        <span class="badge">A+ Grade</span>
+                    </div>
+                    <h3 class="subject-title">SEHH1070 Statistics & Vector Algebra</h3>
+                </div>
+                <div class="subject-desc-box">
+                    Assignments with ans, Exam Official Detailed Answer
+                </div>
+            </div>
+
+            <div class="subject-wide-card">
+                <div class="subject-header-box">
+                    <div class="badge-row">
+                        <span class="badge highlight">A+ Grade</span>
+                        <span class="badge highlight">🔥 翻炒科</span>
+                    </div>
+                    <h3 class="subject-title">SEHH2250 Engineering Mathematics</h3>
+                </div>
+                <div class="subject-desc-box">
+                    <div>
+                        Assignments with ans, Midterm/Final Q&A, Exam Official ans, 真跡<br>
+                        <span style="color:#666; font-size:0.85rem; display:inline-block; margin-top:4px;">*電子版本教科書可額外買</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subject-wide-card">
+                <div class="subject-header-box">
+                    <div class="badge-row">
+                        <span class="badge">A+ Grade</span>
+                    </div>
+                    <h3 class="subject-title">SEHH2042 Computer Programming</h3>
+                </div>
+                <div class="subject-desc-box">
+                    Past Paper 特訓 (多份考古題與模擬題), Tutorial Exercise 答案
+                </div>
+            </div>
+
+            <div class="subject-wide-card">
+                <div class="subject-header-box">
+                    <div class="badge-row">
+                        <span class="badge">A Grade</span>
+                    </div>
+                    <h3 class="subject-title">SEHH2269 Engineering Graphics</h3>
+                </div>
+                <div class="subject-desc-box">
+                    Assignments with answers, Past Paper Q&A (多份考古題解析)
+                </div>
+            </div>
+
+            <div class="subject-wide-card">
+                <div class="subject-header-box">
+                    <div class="badge-row">
+                        <span class="badge highlight">A+ Grade</span>
+                        <span class="badge highlight">🔥 翻炒科</span>
+                    </div>
+                    <h3 class="subject-title">SEHH1108 Foundation Physics</h3>
+                </div>
+                <div class="subject-desc-box">
+                    Assignments (95, 99分), Test Questions, Tutorial Exercise 答案, 真跡
+                </div>
+            </div>
+
+            <div class="subject-wide-card">
+                <div class="subject-header-box">
+                    <div class="badge-row">
+                        <span class="badge highlight">A- Grade</span>
+                        <span class="badge highlight">🔥 翻炒科</span>
+                    </div>
+                    <h3 class="subject-title">SEHH1049 Physics I</h3>
+                </div>
+                <div class="subject-desc-box">
+                    <div>
+                        Assignments with ans, Lab Report, Exam Q&A<br>
+                        <span style="color:#666; font-size:0.85rem; display:inline-block; margin-top:4px;">*電子版本教科書可額外買</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subject-wide-card">
+                <div class="subject-header-box">
+                    <div class="badge-row">
+                        <span class="badge highlight">🔥 翻炒科</span>
+                    </div>
+                    <h3 class="subject-title">SEHH2246 Basic Electricity & Electronics</h3>
+                </div>
+                <div class="subject-desc-box">
+                    <div>
+                        Assignments/Test Sol, Exam Detailed ans, 真跡<br>
+                        <span style="color:#666; font-size:0.85rem; display:inline-block; margin-top:4px;">*Antony XXX Recording 可額外買</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subject-wide-card">
+                <div class="subject-header-box">
+                    <div class="badge-row">
+                        <span class="badge highlight">A+ Grade</span>
+                        <span class="badge highlight">🔥 翻炒科</span>
+                    </div>
+                    <h3 class="subject-title">SEHH2251 Engineering Mechanics I</h3>
+                </div>
+                <div class="subject-desc-box">
+                    <div>
+                        Assignments/Test Sol, Exam Official ans, 真跡<br>
+                        <span style="color:#666; font-size:0.85rem; display:inline-block; margin-top:4px;">*Recording / 教科書可額外買</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subject-wide-card">
+                <div class="subject-header-box">
+                    <div class="badge-row">
+                        <span class="badge highlight">A Grade</span>
+                        <span class="badge highlight">🔥 翻炒科</span>
+                    </div>
+                    <h3 class="subject-title">SEHH2328 Structural Mechanics</h3>
+                </div>
+                <div class="subject-desc-box">
+                    Assignments with ans, Test Questions with Solutions, 真跡
+                </div>
+            </div>
+
+            <div class="subject-wide-card">
+                <div class="subject-header-box">
+                    <div class="badge-row">
+                        <span class="badge highlight">A Grade</span>
+                        <span class="badge highlight">🔥 翻炒科</span>
+                    </div>
+                    <h3 class="subject-title">SEHH2249 Engineering Materials</h3>
+                </div>
+                <div class="subject-desc-box">
+                    Assignments with ans, Test Questions, 真跡
+                </div>
+            </div>
+
+            <div class="subject-wide-card">
+                <div class="subject-header-box">
+                    <div class="badge-row">
+                        <span class="badge highlight">A+ Grade</span>
+                        <span class="badge highlight">🔥 翻炒科</span>
+                    </div>
+                    <h3 class="subject-title">SEHH2315 Survey Adjustment</h3>
+                </div>
+                <div class="subject-desc-box">
+                    Assignments with ans, Test Questions with Solutions, 真跡
+                </div>
+            </div>
+
+            <div class="subject-wide-card">
+                <div class="subject-header-box">
+                    <div class="badge-row">
+                        <span class="badge highlight">A Grade</span>
+                        <span class="badge highlight">🌟 熱賣</span>
+                    </div>
+                    <h3 class="subject-title">BHMH2002 Intro to Economics</h3>
+                </div>
+                <div class="subject-desc-box">
+                    <div>
+                        Assignment & Exam Q&A, 送Cheat sheet pdf, 多個Sem Midterm Q&A<br>
+                        <span style="color:#666; font-size:0.85rem; display:inline-block; margin-top:4px;">*June FXXX Recording可額外買</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subject-wide-card">
+                <div class="subject-header-box">
+                    <div class="badge-row">
+                        <span class="badge">A Grade</span>
+                    </div>
+                    <h3 class="subject-title">SHDH2056 Traditional Chinese Thoughts</h3>
+                </div>
+                <div class="subject-desc-box">
+                    Individual Assignment 1&2 (10份真跡), Group Project (5份伊斯蘭教真跡)
+                </div>
+            </div>
+
+            <div class="subject-wide-card">
+                <div class="subject-header-box">
+                    <div class="badge-row">
+                        <span class="badge">A- Grade</span>
+                    </div>
+                    <h3 class="subject-title">SHDH1018 Introduction to Sociology</h3>
+                </div>
+                <div class="subject-desc-box">
+                    社會學筆記 (涵蓋重點概念題型), Assignment 筆記與範例
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section-container" id="services">
+        <h2 class="section-title">📚 Books & 附加服務</h2>
+        
+        <div class="glass-card">
+            <h3 style="margin-top:0;">💡 附加服務 (Services)</h3>
+            <ul style="margin: 0; padding-left: 20px; color: #444;">
+                <li><strong>✅ 免費服務：</strong>揀科建議、Lecturer 推薦、Non-JUPAS 入學解答</li>
+                <li><strong>✅ 付費服務：</strong>1 對 1 私補、Assignment 輔導 (只適用於 1068, 1069, 1070, 2250)</li>
+            </ul>
+        </div>
+
+        <div class="glass-card">
+            <h3 style="margin-top:0;">📚 HKCC English Books (EAS & AE)</h3>
+            <p><strong>EAS:</strong> 只適用於 DSE English level 3 or above students.<br>
+            <strong>AE:</strong> 只適用於 DSE English level 2 or below students.<br>
+            <em>*買家請根據自己 DSE English 成績購買其中一本便可！(HKD 20 per each book)</em></p>
+            
+            <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 20px 0;">
+            
+            <h4 style="margin-bottom: 10px;">💫 可以額外購買：</h4>
+            <ul style="margin: 0; padding-left: 20px; color: #444;">
+                <li><strong>EAS Sources PDF (HKD 88):</strong> Week 1-13 material, 清晰, 3 set of Test PP (含罕有官方答案)</li>
+                <li><strong>EAS Book Solution (HKD 80):</strong> 罕有出版社官方答案, 只適用於 EAS book (清晰 docs form)</li>
+            </ul>
+            <p style="color: #d84315; font-weight: bold; margin-top: 15px;">🔥 如同時購買所有 EAS 資料，只需 HKD 150 🔥</p>
+        </div>
+
+        <div class="glass-card" style="margin-bottom: 0;">
+            <h3 style="margin-top:0;">📚 Psychology Textbook (PDF)</h3>
+            <p><strong>What is Psychology? Foundations, Applications, and Integration (3rd Edition)</strong><br>
+            By Ellen Pastorino, Susann Doyle Portillo<br>
+            適用於 course: <strong>SHDH2379 / SHDH1017</strong></p>
+            <p style="margin:0; font-size: 0.9rem; color: #666;">❗️All written in English | 全新檔案，冇任何畫花</p>
+        </div>
+    </section>
+
+    <section class="contact-section" id="contact">
+        <h2>📩 聯絡我 / Contact 📩</h2>
+        <p style="font-size: 1.2rem; font-weight: 600; margin: 20px 0;">
+            ❗️ All level 1 courses : $50 HKD<br>
+            ❗️ All level 2 courses : $70 HKD
+        </p>
+        <p style="max-width: 600px; margin: 0 auto; opacity: 0.9;">
+            多買多優惠！如需要書本或 Recording 需額外購買。<br>如有興趣，不妨直接 DM 我問更多優惠細節，會提供完整科目內容列表！
+        </p>
+        
+        <a href="https://www.instagram.com/hkccsources?igsh=MTRwMzlnbjloeWJjNA==" target="_blank" class="contact-btn">Click My IG (@hkccsources)</a>
+        
+        <div style="margin-top: 30px; font-size: 1.1rem;">💪 記住：未到最後一刻都不要放棄！祝大家學業進步，成功上岸！🥹</div>
+    </section>
+
+    <footer>
+        &copy; 2026 HKCC Sources (By Luthor) | Made for Engineering Associate Students
+    </footer>
+
+</body>
+</html>
